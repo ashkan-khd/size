@@ -101,9 +101,7 @@ func AbortIfTooLarge(key, valType string) gin.HandlerFunc {
 		case "Text":
 			context.PostForm(key)
 		case "File":
-			if _, err := context.FormFile(key); err != nil {
-				panic(err)
-			}
+			context.FormFile(key)
 		}
 		if len(context.Errors) > 0 {
 			fmt.Println("Sent Data Was Too Large")
