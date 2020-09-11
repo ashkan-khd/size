@@ -78,7 +78,6 @@ func (mbr *maxBytesReader) Close() error {
 // * Current context will be aborted
 func RequestSizeLimiter(limit int64) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		fmt.Println("Hello")
 		ctx.Request.Body = &maxBytesReader{
 			ctx:        ctx,
 			rdr:        ctx.Request.Body,
