@@ -1,9 +1,9 @@
 package main
 
 import (
-	"net/http"
-	"github.com/gin-contrib/size"
+	limits "github.com/gin-contrib/size"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func handler(ctx *gin.Context) {
@@ -16,7 +16,7 @@ func handler(ctx *gin.Context) {
 
 func main() {
 	rtr := gin.Default()
-	rtr.Use(limits.RequestSizeLimiter(10))
+	rtr.Use(limits.RequestSizeLimiter(2750), limits.AbortIfTooLarge("b", limits.TextFormFile))
 	rtr.POST("/", handler)
 	rtr.Run(":8080")
 }

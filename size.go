@@ -78,6 +78,7 @@ func (mbr *maxBytesReader) Close() error {
 // * Current context will be aborted
 func RequestSizeLimiter(limit int64) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		fmt.Println("Hello")
 		ctx.Request.Body = &maxBytesReader{
 			ctx:        ctx,
 			rdr:        ctx.Request.Body,
@@ -86,5 +87,27 @@ func RequestSizeLimiter(limit int64) gin.HandlerFunc {
 			sawEOF:     false,
 		}
 		ctx.Next()
+	}
+}
+
+const (
+	FileFormType = "File"
+	TextFormFile = "Text"
+)
+
+func AbortIfTooLarge(key, valType string) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		switch valType {
+		case "Text":
+			context.PostForm(key)
+		case "File":
+			if _, err := context.FormFile(key); err != nil {
+				panic(err)
+			}
+		}
+		if len(context.Errors) > 0 {
+			fmt.Println("Sent Data Was Too Large")
+			context.Abort()
+		}
 	}
 }
