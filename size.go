@@ -103,7 +103,6 @@ func AbortIfTooLarge(key, valType string) gin.HandlerFunc {
 			context.FormFile(key)
 		}
 		if len(context.Errors) > 0 {
-			fmt.Println("Sent Data Was Too Large")
 			context.Abort()
 		}
 	}
